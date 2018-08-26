@@ -5,8 +5,10 @@
 #include "Engine/CollisionProfile.h"
 #include "Components/InputComponent.h"
 #include "RTSBR_CameraComponent.h"
+#include "RTSBR_SpectatorPawnMovement.h"
 
-ARTSBR_SpectatorPawn::ARTSBR_SpectatorPawn()
+ARTSBR_SpectatorPawn::ARTSBR_SpectatorPawn(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<URTSBR_SpectatorPawnMovement>(Super::MovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = false;
 

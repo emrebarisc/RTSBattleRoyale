@@ -19,5 +19,7 @@ public:
 
 	void BeginPlay() override;
 	void Tick(float deltaSeconds) override;
-	
+
+	/** World bounds for mini map & camera movement. */
+	FBox worldBounds;
 };

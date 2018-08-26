@@ -12,6 +12,7 @@
 #include "RTSBR_SpectatorPawn.h"
 #include "RTSBR_SpectatorPawnMovement.h"
 #include "Engine/Engine.h"
+#include "RTSBR_GameState.h"
 
 URTSBR_CameraComponent::URTSBR_CameraComponent()
 {
@@ -153,18 +154,6 @@ void URTSBR_CameraComponent::SetZoomLevel(float level)
 	zoomAlpha_ = FMath::Clamp(level, minZoomLevel_, maxZoomLevel_);
 }
 
-void URTSBR_CameraComponent::ClampCameraLocation(const APlayerController *playerController, FVector& outCameraLocation) const
-{
-	if (bShouldClampCamera_)
-	{
-		UpdateCameraBounds(playerController);
-		if (cameraMovementBounds_.GetSize() != FVector::ZeroVector)
-		{
-			outCameraLocation = cameraMovementBounds_.GetClosestPointTo(outCameraLocation);
-		}
-	}
-}
-
 APawn* URTSBR_CameraComponent::GetOwnerPawn() const
 {
 	return Cast<APawn>(GetOwner());
@@ -180,24 +169,4 @@ ARTSBR_PlayerController* URTSBR_CameraComponent::GetPlayerController() const
 	}
 
 	return controller;
-}
-
-void URTSBR_CameraComponent::UpdateCameraBounds(const APlayerController* playerController) const
-{
-	ULocalPlayer* const localPlayer = Cast<ULocalPlayer>(playerController->Player);
-	if (localPlayer == NULL || localPlayer->ViewportClient == NULL)
-	{
-		return;
-	}
-
-	FVector2D currentViewportSize;
-	localPlayer->ViewportClient->GetViewportSize(currentViewportSize);
-
-	if (cameraMovementBounds_.GetSize() == FVector::ZeroVector || currentViewportSize != cameraMovementViewportSize_)
-	{
-		const FVector frustumRay2DDir = FVector(1, 1, 0).GetSafeNormal();
-		const FVector frustumRay2DRight = FVector::CrossProduct(frustumRay2DDir, FVector::UpVector);
-		const FQuat rotationQuat(frustumRay2DRight, FMath::DegreesToRadians(90.f - playerController->PlayerCameraManager->GetFOVAngle() * 0.5f));
-		const FVector frustumRayDir = rotationQuat.RotateVector(frustumRay2DDir);
-	}
 }

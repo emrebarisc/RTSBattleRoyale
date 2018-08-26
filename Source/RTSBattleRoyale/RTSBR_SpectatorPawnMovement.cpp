@@ -32,14 +32,5 @@ void URTSBR_SpectatorPawnMovement::TickComponent(float deltaTime, ELevelTick tic
 			PawnOwner->SetActorRotation(playerController->GetControlRotation());
 			PawnOwner->SetActorLocation(playerController->GetSpawnLocation());
 		}
-
-		FVector componentLocation = UpdatedComponent->GetComponentLocation();
-		ARTSBR_SpectatorPawn *spectatorPawn = playerController->GetMainSpectatorPawn();
-		if(spectatorPawn && spectatorPawn->GetCameraComponent())
-		{
-			spectatorPawn->GetCameraComponent()->ClampCameraLocation(playerController, componentLocation);
-		}
-
-		UpdatedComponent->SetWorldLocation(componentLocation, false);
 	}
 }

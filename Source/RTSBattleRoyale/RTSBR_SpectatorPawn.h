@@ -17,7 +17,7 @@ class RTSBATTLEROYALE_API ARTSBR_SpectatorPawn : public ASpectatorPawn
 	GENERATED_BODY()
 	
 public:
-	ARTSBR_SpectatorPawn();
+	ARTSBR_SpectatorPawn(const FObjectInitializer& ObjectInitializer);
 	virtual void BeginPlay() override;
 	virtual void Tick(float deltaTime) override;
 	
