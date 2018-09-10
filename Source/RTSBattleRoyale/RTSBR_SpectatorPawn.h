@@ -15,7 +15,9 @@ UCLASS()
 class RTSBATTLEROYALE_API ARTSBR_SpectatorPawn : public ASpectatorPawn
 {
 	GENERATED_BODY()
-	
+
+	friend class ARTSBR_PlayerController;
+
 public:
 	ARTSBR_SpectatorPawn(const FObjectInitializer& ObjectInitializer);
 	virtual void BeginPlay() override;
@@ -27,8 +29,6 @@ public:
 	}
 
 private:
-	virtual void SetupPlayerInputComponent(class UInputComponent* inputComponent) override;
-
 	void MoveForward(float value);
 	void MoveRight(float value);
 	void OnMouseScrollUp();

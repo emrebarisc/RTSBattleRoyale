@@ -30,19 +30,6 @@ void ARTSBR_SpectatorPawn::Tick(float deltaTime)
 	Super::Tick(deltaTime);
 }
 
-void ARTSBR_SpectatorPawn::SetupPlayerInputComponent(UInputComponent* inputComponent)
-{
-	check(inputComponent);
-
-	Super::SetupPlayerInputComponent(inputComponent);
-
-	inputComponent->BindAction("ZoomIn", IE_Pressed, this, &ARTSBR_SpectatorPawn::OnMouseScrollUp);
-	inputComponent->BindAction("ZoomOut", IE_Pressed, this, &ARTSBR_SpectatorPawn::OnMouseScrollDown);
-
-	inputComponent->BindAxis("MoveForward", this, &ARTSBR_SpectatorPawn::MoveForward);
-	inputComponent->BindAxis("MoveRight", this, &ARTSBR_SpectatorPawn::MoveRight);
-}
-
 void ARTSBR_SpectatorPawn::MoveForward(const float value)
 {
 	if(value != 0.f)

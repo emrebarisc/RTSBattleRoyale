@@ -22,6 +22,17 @@ ARTSBR_SpectatorPawn* ARTSBR_PlayerController::GetMainSpectatorPawn() const
 	return Cast<ARTSBR_SpectatorPawn>(GetPawn());
 }
 
+void ARTSBR_PlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+
+	InputComponent->BindAction("ZoomIn", IE_Pressed, this, &ARTSBR_PlayerController::ZoomIn);
+	InputComponent->BindAction("ZoomOut", IE_Pressed, this, &ARTSBR_PlayerController::ZoomOut);
+
+	InputComponent->BindAxis("MoveForward", this, &ARTSBR_PlayerController::MovePawnForward);
+	InputComponent->BindAxis("MoveRight", this, &ARTSBR_PlayerController::MovePawnRight);
+}
+
 void ARTSBR_PlayerController::ProcessPlayerInput(const float deltaTime, const bool bGamePaused)
 {
 	Super::ProcessPlayerInput(deltaTime, bGamePaused);
@@ -37,5 +48,41 @@ void ARTSBR_PlayerController::ProcessPlayerInput(const float deltaTime, const bo
 				spectatorPawn->GetCameraComponent()->UpdateCameraMovement(this);
 			}
 		}
+	}
+}
+
+void ARTSBR_PlayerController::MovePawnForward(const float value)
+{
+	ARTSBR_SpectatorPawn *spectatorPawn;
+	if (value != 0.f && (spectatorPawn = Cast<ARTSBR_SpectatorPawn>(GetPawn())) != nullptr)
+	{
+		spectatorPawn->MoveForward(value);
+	}
+}
+
+void ARTSBR_PlayerController::MovePawnRight(const float value)
+{
+	ARTSBR_SpectatorPawn *spectatorPawn;
+	if (value != 0.f && (spectatorPawn = Cast<ARTSBR_SpectatorPawn>(GetPawn())) != nullptr)
+	{
+		spectatorPawn->MoveRight(value);
+	}
+}
+
+void ARTSBR_PlayerController::ZoomIn()
+{
+	ARTSBR_SpectatorPawn *spectatorPawn;
+	if ((spectatorPawn = Cast<ARTSBR_SpectatorPawn>(GetPawn())) != nullptr)
+	{
+		spectatorPawn->OnMouseScrollUp();
+	}
+}
+
+void ARTSBR_PlayerController::ZoomOut()
+{
+	ARTSBR_SpectatorPawn *spectatorPawn;
+	if ((spectatorPawn = Cast<ARTSBR_SpectatorPawn>(GetPawn())) != nullptr)
+	{
+		spectatorPawn->OnMouseScrollDown();
 	}
 }

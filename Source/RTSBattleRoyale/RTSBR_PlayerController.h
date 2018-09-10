@@ -22,7 +22,13 @@ public:
 	ARTSBR_SpectatorPawn *GetMainSpectatorPawn() const;
 
 protected:
+	virtual void SetupInputComponent() override;
 	virtual void ProcessPlayerInput(const float deltaTime, const bool bGamePaused) override;
+
+	void MovePawnForward(float value);
+	void MovePawnRight(float value);
+	void ZoomIn();
+	void ZoomOut();
 
 private:
 
