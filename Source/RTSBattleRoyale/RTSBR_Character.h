@@ -29,10 +29,14 @@ public:
 
 	void ApplyDamage(const Damage &damage);
 
+	void MoveToDestination(FVector destination);
+
 	bool GetIsAttacking() const
 	{
 		return isAttacking_;
 	}
+
+	void SetIsSelected(bool isSelected) const;
 
 protected:
 	virtual void Attack();
@@ -51,4 +55,6 @@ private:
 	virtual void Tick(float deltaTime) override;
 	virtual void BeginPlay() override;
 
+private:
+	UDecalComponent* selectionDecalComp_;
 };

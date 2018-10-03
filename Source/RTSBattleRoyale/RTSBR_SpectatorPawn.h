@@ -6,6 +6,7 @@
 #include "GameFramework/SpectatorPawn.h"
 #include "RTSBR_SpectatorPawn.generated.h"
 
+class ARTSBR_Character;
 class URTSBR_CameraComponent;
 
 /**
@@ -33,6 +34,8 @@ private:
 	void MoveRight(float value);
 	void OnMouseScrollUp();
 	void OnMouseScrollDown();
+
+	TArray<ARTSBR_Character*> selectedCharacters_;
 
 	URTSBR_CameraComponent* cameraComponent_;
 };
