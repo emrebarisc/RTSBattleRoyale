@@ -36,6 +36,16 @@ public:
 		return isAttacking_;
 	}
 
+	float GetHealth() const
+	{
+		return health_;
+	}
+
+	float GetMaxHealth() const
+	{
+		return maxHealth_;
+	}
+
 	void SetIsSelected(bool isSelected) const;
 
 protected:
@@ -44,6 +54,7 @@ protected:
 	virtual void Die();
 
 	Damage damage_;
+	float maxHealth_;
 	float health_;
 	float armor_;
 	float magicResistance_;

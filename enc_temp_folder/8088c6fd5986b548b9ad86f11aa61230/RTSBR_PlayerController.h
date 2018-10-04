@@ -22,16 +22,6 @@ public:
 
 	ARTSBR_SpectatorPawn *GetMainSpectatorPawn() const;
 
-	FVector const& GetSelectionStartPosition() const
-	{
-		return selectionStartPosition_;
-	}
-
-	bool GetIsSelectionActive() const
-	{
-		return isSelectionActive_;
-	}
-
 protected:
 	virtual void SetupInputComponent() override;
 	virtual void ProcessPlayerInput(const float deltaTime, const bool bGamePaused) override;
@@ -50,8 +40,5 @@ private:
 
 	FVector selectionStartPosition_;
 	FVector selectionEndPosition_;
-	
 	UBoxComponent* multipleSelectionBox_;
-
-	bool isSelectionActive_;
 };

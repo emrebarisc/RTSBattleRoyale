@@ -29,6 +29,11 @@ public:
 		return cameraComponent_;
 	}
 
+	TArray<ARTSBR_Character*> const* GetSelectedCharacters() const
+	{
+		return &selectedCharacters_;
+	}
+
 private:
 	void MoveForward(float value);
 	void MoveRight(float value);

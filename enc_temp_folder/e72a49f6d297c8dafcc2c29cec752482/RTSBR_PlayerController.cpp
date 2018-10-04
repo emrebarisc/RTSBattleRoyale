@@ -11,7 +11,7 @@
 #include "RTSBR_SpectatorPawn.h"
 #include "Engine/Engine.h"
 
-ARTSBR_PlayerController::ARTSBR_PlayerController() : isSelectionActive_(false)
+ARTSBR_PlayerController::ARTSBR_PlayerController()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bHidden = false;
@@ -103,8 +103,6 @@ void ARTSBR_PlayerController::StartSelection()
 	FHitResult hit;
 	GetHitResultUnderCursor(ECC_Visibility, false, hit);
 	selectionStartPosition_ = hit.Location;
-
-	isSelectionActive_ = true;
 }
 
 void ARTSBR_PlayerController::EndSelection()
@@ -112,8 +110,6 @@ void ARTSBR_PlayerController::EndSelection()
 	FHitResult hit;
 	GetHitResultUnderCursor(ECC_Visibility, false, hit);
 	selectionEndPosition_ = hit.Location;
-
-	isSelectionActive_ = false;
 
 	UnitSelection();
 }

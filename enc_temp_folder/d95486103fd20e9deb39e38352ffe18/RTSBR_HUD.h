@@ -37,4 +37,5 @@ private:
 
 	FVector2D selectionGridStartPosition_;
 	float uiScale_;
+	bool isSelectionGridActive_;
 };

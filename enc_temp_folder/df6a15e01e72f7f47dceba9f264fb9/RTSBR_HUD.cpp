@@ -9,7 +9,6 @@
 
 #include "RTSBR_Character.h"
 #include "RTSBR_SpectatorPawn.h"
-#include "RTSBR_PlayerController.h"
 
 ARTSBR_HUD::ARTSBR_HUD()
 {
@@ -38,28 +37,15 @@ void ARTSBR_HUD::DrawHUD()
 	}
 	
 	ShowHealthBars();
-
-	if(GetPlayerController()->GetIsSelectionActive())
-	{
-		const FVector selectionStartPosition = Canvas->Project(GetPlayerController()->GetSelectionStartPosition());
-
-		ShowSelectionGrid(FVector2D(selectionStartPosition));
-	}
 }
 
 ARTSBR_PlayerController * ARTSBR_HUD::GetPlayerController() const
 {
-	return Cast<ARTSBR_PlayerController>(PlayerOwner);
+	return nullptr;
 }
 
 ARTSBR_SpectatorPawn *ARTSBR_HUD::GetSpectatorPawn() const
 {
-	ARTSBR_PlayerController *pc = GetPlayerController();
-	if (pc)
-	{
-		return pc->GetMainSpectatorPawn();
-	}
-
 	return nullptr;
 }
 
@@ -104,7 +90,7 @@ void ARTSBR_HUD::ShowHealthBars() const
 
 			/* Health tile */
 			barWidth -= 2.f;
-			barHeight -= 2.f;  
+			barHeight -= 2.f;
 
 			x = center2D.X - barWidth * 0.5f;
 			y = center2D.Y + 1.f;
@@ -119,29 +105,5 @@ void ARTSBR_HUD::ShowHealthBars() const
 
 void ARTSBR_HUD::ShowSelectionGrid(FVector2D gridStartPos)
 {
-	FVector2D mousePosition;
-	GetPlayerController()->GetMousePosition(mousePosition.X, mousePosition.Y);
 
-	float gridWidth = mousePosition.X - gridStartPos.X;
-	float gridHeight = mousePosition.Y - gridStartPos.Y;
-
-	FCanvasTileItem fillTileItem(gridStartPos, FVector2D(gridWidth, gridHeight), FLinearColor(1.0f, 1.0f, 1.0f, 0.2f));
-	fillTileItem.BlendMode = SE_BLEND_Translucent;
-	Canvas->DrawItem(fillTileItem);
-
-	FCanvasTileItem tileItem(gridStartPos, FVector2D(gridWidth, 1.f), FLinearColor(1.0f, 1.0f, 1.0f, 1.0f));
-	tileItem.BlendMode = SE_BLEND_Translucent;
-	tileItem.UV1 = FVector2D(gridWidth * 0.1f, 1.f);
-	Canvas->DrawItem(tileItem);
-
-	tileItem.Position = gridStartPos + FVector2D(0.f, gridHeight);
-	Canvas->DrawItem(tileItem);
-
-	tileItem.Position = gridStartPos;
-	tileItem.Size = FVector2D(1.f, gridHeight);
-	tileItem.UV1 = FVector2D(1.f, gridHeight * 0.1f);
-	Canvas->DrawItem(tileItem);
-
-	tileItem.Position = gridStartPos + FVector2D(gridWidth, 0.f);
-	Canvas->DrawItem(tileItem);
 }

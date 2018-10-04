@@ -20,8 +20,14 @@ public:
 	void BeginPlay() override;
 	void Tick(float deltaSeconds) override;
 
+	bool GetIsGameActive() const
+	{
+		return isGameActive_;
+	}
+
 	/** World bounds for mini map & camera movement. */
 	FBox worldBounds;
 
 private:
+	bool isGameActive_;
 };

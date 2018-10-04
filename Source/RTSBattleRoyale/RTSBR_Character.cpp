@@ -13,7 +13,7 @@
 
 ARTSBR_Character::ARTSBR_Character() : 
 	damage_(BaseStats::PHYSICAL_DAMAGE, BaseStats::MAGIC_DAMAGE), 
-	health_(BaseStats::HEALTH), armor_(BaseStats::ARMOR), magicResistance_(BaseStats::MAGIC_RESISTANCE), 
+	health_(BaseStats::HEALTH), maxHealth_(BaseStats::HEALTH), armor_(BaseStats::ARMOR), magicResistance_(BaseStats::MAGIC_RESISTANCE),
 	attackSpeed_(BaseStats::ATTACK_SPEED), isAttacking_(false)
 {
 	PrimaryActorTick.bCanEverTick = false;
