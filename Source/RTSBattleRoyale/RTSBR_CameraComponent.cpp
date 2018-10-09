@@ -24,7 +24,7 @@ URTSBR_CameraComponent::URTSBR_CameraComponent()
 	minZoomLevel_ = 0.4f;
 	maxZoomLevel_ = 1.f;
 	minCameraOffset_ = 0.f;
-	maxCameraOffset_ = 20000.f;
+	maxCameraOffset_ = 10000.f;
 	movementSpeed_ = 100.f;
 
 	fixedCameraAngle_ = FRotator(-60.f, 0.f, 0.f);

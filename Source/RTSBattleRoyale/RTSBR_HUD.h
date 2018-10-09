@@ -27,14 +27,14 @@ private:
 	ARTSBR_PlayerController* GetPlayerController() const;
 	ARTSBR_SpectatorPawn* GetSpectatorPawn() const;
 
-	void ShowHealthBars() const;
-	void ShowSelectionGrid(FVector2D gridStartPos);
-
-	TSharedPtr<class SStrategySlateHUDWidget> HUDWidget;
-
-	UTexture2D *selectionGridTextureH_;
-	UTexture2D *selectionGridTextureV_;
+	void DrawHealthBars() const;
+	void DrawSelectionGrid(FVector2D gridStartPos) const;
+	void DrawTopInfoBar();
 
 	FVector2D selectionGridStartPosition_;
+
+	UTexture2D *topInfoBarTexture_;
+	UFont *uiFont_;
+
 	float uiScale_;
 };

@@ -10,10 +10,17 @@
 #include "RTSBR_Character.h"
 #include "RTSBR_SpectatorPawn.h"
 #include "RTSBR_PlayerController.h"
+#include "ConstructorHelpers.h"
 
 ARTSBR_HUD::ARTSBR_HUD()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	const ConstructorHelpers::FObjectFinder<UTexture2D> topInfoBarTextureAsset(TEXT("Texture2D'/Game/Assets/Textures/TopUIBar.TopUIBar'"));
+	if (topInfoBarTextureAsset.Object) topInfoBarTexture_ = topInfoBarTextureAsset.Object;
+
+	const ConstructorHelpers::FObjectFinder<UFont> uiFontAsset(TEXT("Font'/Game/Assets/Fonts/SpindleRefined-Regular_Font.SpindleRefined-Regular_Font'"));
+	if (uiFontAsset.Object) uiFont_ = uiFontAsset.Object;
 }
 
 void ARTSBR_HUD::BeginPlay()
@@ -37,14 +44,16 @@ void ARTSBR_HUD::DrawHUD()
 		uiScale_ = viewportSize.X / 2048.f;
 	}
 	
-	ShowHealthBars();
+	DrawHealthBars();
 
 	if(GetPlayerController()->GetIsSelectionActive())
 	{
 		const FVector selectionStartPosition = Canvas->Project(GetPlayerController()->GetSelectionStartPosition());
 
-		ShowSelectionGrid(FVector2D(selectionStartPosition));
+		DrawSelectionGrid(FVector2D(selectionStartPosition));
 	}
+
+	DrawTopInfoBar();
 }
 
 ARTSBR_PlayerController * ARTSBR_HUD::GetPlayerController() const
@@ -63,17 +72,17 @@ ARTSBR_SpectatorPawn *ARTSBR_HUD::GetSpectatorPawn() const
 	return nullptr;
 }
 
-void ARTSBR_HUD::ShowHealthBars() const
+void ARTSBR_HUD::DrawHealthBars() const
 {
 	for (FConstPawnIterator pawn = GetWorld()->GetPawnIterator(); pawn; ++pawn)
 	{
 		ARTSBR_Character* character = Cast<ARTSBR_Character>(*pawn);
 		if (character && character->GetHealth() > 0)
 		{
-			FVector center = character->GetActorLocation();
-			FVector extent = FVector(60.f, 34.f, 131.75f);
+			const FVector center = character->GetActorLocation();
+			const FVector extent = FVector(60.f, 34.f, 131.75f);
 
-			FVector2D center2D = FVector2D(Canvas->Project(FVector(center.X, center.Y, center.Z + extent.Z)));
+			const FVector2D center2D = FVector2D(Canvas->Project(FVector(center.X, center.Y, center.Z + extent.Z)));
 
 			float actorExtent = 50.f;
 			float healthPercentage = 0.5f;
@@ -82,13 +91,11 @@ void ARTSBR_HUD::ShowHealthBars() const
 			healthPercentage = character->GetHealth() / character->GetMaxHealth();
 			actorExtent = character->GetCapsuleComponent()->GetScaledCapsuleRadius();
 
-			FVector pos1 = Canvas->Project(FVector(center.X, center.Y - actorExtent * 2, center.Z + extent.Z));
-			FVector pos2 = Canvas->Project(FVector(center.X, center.Y + actorExtent * 2, center.Z + extent.Z));
+			const FVector pos1 = Canvas->Project(FVector(center.X, center.Y - actorExtent * 2, center.Z + extent.Z));
+			const FVector pos2 = Canvas->Project(FVector(center.X, center.Y + actorExtent * 2, center.Z + extent.Z));
 
 			float barWidth = (pos2 - pos1).Size2D();
 			float barHeight = barWidth * 0.2f;
-
-			ARTSBR_PlayerController* playerController = GetPlayerController();
 
 			/* Background tile */
 			barWidth += 2.f;
@@ -117,7 +124,7 @@ void ARTSBR_HUD::ShowHealthBars() const
 	}
 }
 
-void ARTSBR_HUD::ShowSelectionGrid(FVector2D gridStartPos)
+void ARTSBR_HUD::DrawSelectionGrid(FVector2D gridStartPos) const
 {
 	FVector2D mousePosition;
 	GetPlayerController()->GetMousePosition(mousePosition.X, mousePosition.Y);
@@ -144,4 +151,21 @@ void ARTSBR_HUD::ShowSelectionGrid(FVector2D gridStartPos)
 
 	tileItem.Position = gridStartPos + FVector2D(gridWidth, 0.f);
 	Canvas->DrawItem(tileItem);
+}
+
+void ARTSBR_HUD::DrawTopInfoBar()
+{
+	const float gridWidth = GEngine->GameViewport->Viewport->GetSizeXY().X;
+	const float gridHeight = 30.f;
+
+	FCanvasTileItem tileItem(FVector2D::ZeroVector, topInfoBarTexture_->Resource, FVector2D(gridWidth, gridHeight), FLinearColor(1.f, 1.f, 1.f, 1.f));
+	tileItem.BlendMode = SE_BLEND_Translucent;
+	tileItem.UV1 = FVector2D(0.5f, 0.5f);
+	Canvas->DrawItem(tileItem);
+
+	const FString gameText("REAL TIME STRATEGY BATTLE ROYALE");
+	float textWidth = 0;
+	float textHeight = 0;
+	GetTextSize(gameText, textWidth, textHeight, uiFont_);
+	DrawText(gameText, FLinearColor::White, (gridWidth - textWidth) * 0.5f, (gridHeight - textHeight) * 0.5f, uiFont_);
 }
